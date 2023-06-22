@@ -1,5 +1,7 @@
 import axios from "axios";
 
+
+
 const apiUrl = "http://localhost:8181";
 export const getCards = async () => {
   try {
@@ -12,7 +14,7 @@ export const getCards = async () => {
 };
 
 export const getMyCards = async () => {
-  console.log("get my cards");
+
   try {
     const response = await axios.get(`${apiUrl}/cards/my-cards`);
     const data = response.data;
@@ -40,9 +42,11 @@ export const getCard = async (cardId) => {
   }
 };
 
-export const createCard = async (card) => {
+export const createCard = async (normalizedCard) => {
   try {
-    const { data } = await axios.post(`${apiUrl}/cards/`, card);
+    
+    const { data } = await axios.post(`${apiUrl}/cards`, 
+      normalizedCard);
     return data;
   } catch (error) {
     return Promise.reject(error.message);
@@ -67,17 +71,17 @@ export const changeLikeStatus = async (cardId,userid) => {
 
     const { data } = await axios.put(`${apiUrl}/cards/${cardId}`);
     if (data.likes.includes(userid)){
+      
       data.likes.pop(userid);
       
     }else
   {
 
     data.likes.push(userid);
+     
     
   }
     const response = await axios.put(`${apiUrl}/cards/${cardId}`, data);
-    console.log("this is user id" , userid,"this is cardid",cardId ,"test2.....",data.likes)
-    // Return the updated data
     return response.data;
   } catch (error) {
     return Promise.reject(error.message);

@@ -5,10 +5,9 @@ const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8181";
 export const login = async (user) => {
   try {
     const { data } = await axios.post(`${apiUrl}/users/login`, user);
-    console.log(data);
     return data;
   } catch (error) {
-    console.log(error);
+    
     return Promise.reject(error.message);
   }
 };
@@ -22,15 +21,8 @@ export const signup = async (normalizedUser) => {
   }
 };
 
-export const getUserData = async () => {
-  try {
-    const { data } = await axios.get(`${apiUrl}/users`);
-    return data;
-  } catch (error) {
-    return Promise.reject(error.message);
-  }
-};
-export const getUserData1 = async (id) => {
+
+export const getUserData = async (id) => {
   try {
     const { data } = await axios.get(`${apiUrl}/users/${id}`);
     return data;

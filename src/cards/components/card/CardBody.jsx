@@ -37,5 +37,5 @@ CardBody.propTypes = {
   subtitle: string.isRequired,
   phone: string.isRequired,
   address: addressType.isRequired,
-  cardNumber: number,
+  cardNumber: string,
 };

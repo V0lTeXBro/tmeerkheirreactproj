@@ -15,12 +15,14 @@ export default function CardActionBar({
   handleDelete,
   handleEdit,
   handleLike,
-  handleCreate,
   id,
   user_id,
 }) {
   const { user } = useUser();
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLikedMap, setIsLikedMap] = useState(() => {
+    const storedIsLikedMap = JSON.parse(localStorage.getItem("isLikedMap"));
+    return storedIsLikedMap ? storedIsLikedMap : {};
+  });
   const [isDialogOpen, setDialog] = useState(false);
   const navigate = useNavigate();
   const handleDeleteCard = () => {
@@ -28,8 +30,17 @@ export default function CardActionBar({
     setDialog(false);
   };
 
+  const toggleLike = () => {
+    const updatedIsLikedMap = { ...isLikedMap };
+    updatedIsLikedMap[id] = !isLikedMap[id];
+    setIsLikedMap(updatedIsLikedMap);
+    localStorage.setItem("isLikedMap", JSON.stringify(updatedIsLikedMap));
+    handleLike(id, updatedIsLikedMap[id]);
+  };
+  
+  const isLiked = isLikedMap[id] || false;
 
-  const iconColor = isLiked ? 'red' : 'primary';
+
   return (
     <>
       <CardActions sx={{ paddingTop: 0, justifyContent: "space-between" }}>
@@ -47,7 +58,7 @@ export default function CardActionBar({
                 onClick={() => navigate(`${ROUTES.EDIT_CARD}/${id}`)}
               >
                 <ModeEditIcon />
-              </IconButton>
+              </IconButton >
             </>
           ) : null}
         </Box>
@@ -58,11 +69,10 @@ export default function CardActionBar({
           </IconButton>
           {user && (
             <IconButton
-              aria-label="Add to favorite" style={{ color: iconColor }} 
-              onClick={() => handleLike(id)}
-            
+              aria-label="Add to favorite"
+              onClick={toggleLike}
             >
-              <FavoriteIcon  />
+              {isLiked ? <FavoriteIcon color="error" /> : <FavoriteIcon color="inherit"/>}
             </IconButton>
           )}
         </Box>
@@ -80,6 +90,5 @@ CardActionBar.propTypes = {
   handleDelete: func.isRequired,
   handleEdit: func.isRequired,
   handleLike: func.isRequired,
-  handleCreate: func.isRequired,
   id: string.isRequired,
 };

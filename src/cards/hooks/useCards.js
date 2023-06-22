@@ -11,6 +11,9 @@ import  {
   getCards,
   getMyCards,
 } from "../services/cardApiService";
+import normalizeCard from "../helpers/normalization/normalizeCard";
+
+
 
 export default function useCards() {
   const [cards, setCards] = useState([]);
@@ -60,7 +63,6 @@ export default function useCards() {
     }
   }, []);
 
-  //handleGetCard
   const handleGetCard = useCallback(async (cardId) => {
     try {
       setLoading(true);
@@ -72,7 +74,6 @@ export default function useCards() {
     }
   }, []);
 
-  //handleUpdateCard
   const handleUpdateCard = useCallback(async (cardId, cardFromClient) => {
     try {
       setLoading(true);
@@ -84,42 +85,46 @@ export default function useCards() {
     }
   }, []);
 
-  //handleLikeCard
   const handleLikeCard = useCallback(async (cardId,setIsLiked) => {
     try {
       const card = await changeLikeStatus(cardId,user.id);
       requestStatus(false, null, cards, card);
       if (card.likes.includes(user.id)){
+        
+        snack("success", "The business card has been Liked");
         setIsLiked(true);
-      snack("success", "The business card has been Liked");
+      
       } else {
-        setIsLiked(false);
         snack("success", "The business card has been UnLiked");
+        setIsLiked(false);
+        
       }
+    
       return setIsLiked;
     } catch (error) {
       requestStatus(false, error, null);
     }
   }, []);
-  //handleGetFavCards
   const handleGetFavCards = useCallback(async () => {
     try {
       setLoading(true);
       const cards = await getCards();
-      console.log(cards);
       const favCards = cards.filter((card) => card.likes.includes(user.id));
-      console.log(user.id);
+      
+      
+      
+      
       requestStatus(false, null, favCards);
     } catch (error) {
       requestStatus(false, error, null);
     }
   }, []);
 
-  //handleCreateCard
   const handleCreateCard = useCallback(async (cardFromClient) => {
     try {
       setLoading(true);
-      const card = await createCard(cardFromClient);
+      const normalizedCard = normalizeCard(cardFromClient);   
+      await createCard(normalizedCard);
       requestStatus(false, null, null, card);
       snack("success", "A new business card has been created");
     } catch (error) {

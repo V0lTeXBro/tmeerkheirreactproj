@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useContext } from "react";
+import React from "react";
 import NavItem from "../../../../routes/components/NavItem";
 import ROUTES from "../../../../routes/routesModel";
 import { useUser } from "../../../../users/providers/UserProvider";
@@ -25,7 +25,6 @@ export default function LeftNavBar() {
         <NavItem to={ROUTES.ABOUT} label="About" />
         {user && <NavItem to={ROUTES.FAV_CARDS} label="Favorite cards" />}
         {user?.isBusiness && <NavItem to={ROUTES.MY_CARDS} label="My cards" />}
-        {/* {user?.isAdmin && <NavItem to={ROUTES.SANDBOX} label="Sandbox" />} */}
       </Box>
     </Box>
   );

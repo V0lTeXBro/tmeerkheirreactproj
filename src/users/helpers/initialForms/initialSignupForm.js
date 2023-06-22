@@ -11,8 +11,8 @@ const initialSignupForm = {
   country: "",
   city: "",
   street: "",
-  houseNumber: 0,
-  zip: 0,
+  houseNumber: "0",
+  zip: "0",
   isBusiness: false,
 };
 

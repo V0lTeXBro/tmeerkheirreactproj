@@ -1,36 +1,44 @@
-import { Grid, Typography } from "@mui/material";
-import { arrayOf } from "prop-types";
-import React, { useState } from "react";
-import { Container, Button, Modal, TextField } from "@mui/material";
+import { Grid, IconButton} from "@mui/material";
+import { arrayOf,func } from "prop-types";
+import React from "react";
 import cardType from "../models/types/cardType";
 import CardBussinesComponent from "./card/CardBussinesComponent";
-import LoopIcon from "@mui/icons-material/Loop";
-import jwtDecode from "jwt-decode";
 import { getCard } from "../services/cardApiService";
 import useCards from "../hooks/useCards";
-import FormButton from "../../forms/components/FormButton";
+import ROUTES from "../../routes/routesModel";
+import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import { useUser } from "../../users/providers/UserProvider";
 
 
-
-export default function Cards({ cards, handleDelete ,handleCreate }) {
+export default function Cards({ cards, handleDelete,user_id }) {
   const {
     handleLikeCard,
+    handleUpdateCard,
   } = useCards();
-
+  const navigate = useNavigate();
+const { user } = useUser();
   
 
   const handleEdit = (id) => {
-    console.log(`Card ${id} is Edited`);
+    handleUpdateCard(id);
   };
   const handleLike = async (id) => {
     
     const card = await getCard(id);
     
     handleLikeCard(card._id);
+      
     
-    console.log(card);
     
   };
+
+  
+    const handleCreate =  () =>{
+        if (!user) return  navigate(ROUTES.LOGIN);
+else
+      navigate(ROUTES.CREATE_CARD);
+    };
   return (
     <>
       <Grid container spacing={2}>
@@ -42,10 +50,17 @@ export default function Cards({ cards, handleDelete ,handleCreate }) {
               handleDelete={handleDelete}
               handleEdit={handleEdit}
               handleLike={handleLike}
-              handleCreate={handleCreate}
             />
           </Grid>
         ))}
+        {user?.isBusiness || user?.id == user_id ? (
+        <IconButton
+                aria-label="Create Card"
+                onClick={handleCreate}
+              >
+                <AddIcon/>
+              </IconButton>
+        ):null}
       </Grid>
     </>
   );
@@ -53,4 +68,5 @@ export default function Cards({ cards, handleDelete ,handleCreate }) {
 
 Cards.propTypes = {
   cards: arrayOf(cardType),
+  handleCreate: func,
 };

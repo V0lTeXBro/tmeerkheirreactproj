@@ -13,6 +13,7 @@ export default function FavCards() {
 
   const { user } = useUser();
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     if (!user) {
@@ -32,7 +33,7 @@ export default function FavCards() {
       <Container sx={{ mt: 2 }}>
         <PageHeader
           title="Cards"
-          subtitle="On this page you can find all bussines cards from all categories"
+          subtitle="On this page you can find your favorite cards"
         />
         <CardsFeedback
           isLoading={isLoading}

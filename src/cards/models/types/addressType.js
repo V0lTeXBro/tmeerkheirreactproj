@@ -6,7 +6,7 @@ const addressType = shape({
   street: string.isRequired,
   houseNumber: string.isRequired,
   city: string.isRequired,
-  zip: number,
+  zip: string,
 });
 
 export default addressType;

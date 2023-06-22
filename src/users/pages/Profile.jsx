@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getUserData, getUserData1 } from "../services/usersApiService";
+import { getUserData} from "../services/usersApiService";
 import { useUser } from "../providers/UserProvider";
 import { Container, Typography, Grid } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 
 export default function Profile() {
   
@@ -10,10 +11,10 @@ export default function Profile() {
   const [userData, setUserData] = useState(null);
   const getUser = async () => {
     try {
-      const userData = await getUserData1(user.id);
-       setUserData(userData);
+      const userData = await getUserData(user.id);
+      setUserData(userData);
       
-      console.log(userData);
+      
       
     } catch (error) {
       console.log(error);
@@ -27,7 +28,6 @@ export default function Profile() {
         boxShadow: "0px 0px 8px 2px rgba(0, 0, 0, 0.1)",
         borderRadius: "8px",
         backgroundColor: "#fff",
-        borderRadius: "8px",
         padding: "16px",
         display: "flex",
         flexDirection: "column",

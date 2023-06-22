@@ -12,7 +12,7 @@ const cardType = shape({
   web: string.isRequired,
   image: imgType.isRequired,
   address: addressType.isRequired,
-  bizNumber: number.isRequired,
+  bizNumber: string.isRequired,
   likes: array,
   user_id: string.isRequired,
 });
